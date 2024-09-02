@@ -18,7 +18,7 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { onUpdated, ref } from 'vue'
 
 import BaseInput from '@/components/common/BaseInput.vue'
 import { onMounted } from 'vue'
@@ -30,6 +30,9 @@ const props = defineProps({
 
   numberOfOTCBoxes: {
     type: Number
+  },
+  isResetInput: {
+    type: Boolean
   }
 })
 
@@ -37,6 +40,12 @@ const input = ref(null)
 let inputs = []
 onMounted(() => {
   inputs = input.value.children
+})
+
+onUpdated(() => {
+  if (props.isResetInput) {
+    resetInput()
+  }
 })
 
 function onPasteData(event) {

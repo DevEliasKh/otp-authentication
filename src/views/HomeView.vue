@@ -12,7 +12,7 @@ const isLoading = ref(false)
 const showTime = ref('۰۰:۰۰')
 const timerValue = 10
 const timer = ref('')
-
+const isResetInput = ref(false)
 const numberOfOTCBoxes = 6
 
 let timerInterval
@@ -81,7 +81,6 @@ function startInterval() {
 }
 function endInterval() {
   clearInterval(timerInterval)
-  resetTimer()
 }
 
 function resetTimer() {
@@ -95,12 +94,16 @@ function resetBtn(disable) {
 }
 
 function submitHandler(event) {
+  console.log('submit')
   event.preventDefault()
 
   endInterval()
+  resetTimer()
+
   showLoading()
   setTimeout(() => {
     startInterval()
+    isResetInput.value = true
   }, 3000)
 }
 </script>
@@ -117,6 +120,7 @@ function submitHandler(event) {
       <BaseOTP
         :onFilledInput="MoveToNext"
         :numberOfOTCBoxes="numberOfOTCBoxes"
+        :isResetInput="isResetInput"
       >
         <template #hint>
           <div class="otp__text">
