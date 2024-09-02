@@ -20,6 +20,13 @@ const props = defineProps({
 const DV = ref(props.defaultValue)
 </script>
 <template>
-  <input :type="type" :class="className" :autofocus="autofocus" @input="onInput" v-model="DV" />
+  <input
+    :type="type"
+    :class="className"
+    :autofocus="autofocus"
+    @input="onInput"
+    :v-model="DV"
+    maxlength="1"
+  />
 </template>
 <style lang="scss"></style>

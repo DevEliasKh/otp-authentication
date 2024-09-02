@@ -1,16 +1,22 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import BaseInput from '@/components/common/BaseInput.vue'
 
 const btn = ref(null)
 const timerBox = ref(null)
 const key = ref('')
 const isLoading = ref(false)
-const input = ref(null)
 
 const showTime = ref('۰۰:۰۰')
-const timerValue = 15
+const timerValue = 5
 const timer = ref(timerValue)
+
+const defaultValue = ref('')
+let timerInterval
+
+onMounted(() => {
+  startInterval()
+})
 
 function countDown() {
   const min = Math.floor(timer.value / 60)
@@ -20,6 +26,7 @@ function countDown() {
   showTime.value = `${sec}: ${min}`
   console.log(timerBox.value.style.opacity)
   if (timer.value == -1) {
+    endInterval()
     timerBox.value.style.opacity = 0
     btn.value.textContent = 'ارسال مجدد'
   }
@@ -45,17 +52,25 @@ function showLoading() {
   isLoading.value = true
   setTimeout(() => {
     isLoading.value = false
+    defaultValue.value = null
+    btn.value.disabled = true
   }, 3000)
   if (timer.value < 0) {
     setTimeout(() => {
+      startInterval()
       timer.value = timerValue
       timerBox.value.style.opacity = 1
-      input.value = ''
+      defaultValue.value = null
+      btn.value.disabled = true
     }, 3000)
   }
 }
-
-setInterval(countDown, 1000)
+function startInterval() {
+  timerInterval = setInterval(countDown, 1000)
+}
+function endInterval() {
+  clearInterval(timerInterval)
+}
 </script>
 
 <template>
@@ -75,6 +90,7 @@ setInterval(countDown, 1000)
               @input="MoveToNext"
               :tabindex="n"
               :autofocus="n == 1 ? true : false"
+              :value="defaultValue"
             />
           </template>
         </div>
