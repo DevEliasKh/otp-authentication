@@ -10,7 +10,6 @@
           :tabindex="n"
           :autofocus="n == 1 ? true : false"
           :value="inputDefault"
-          @paste="handlePaste"
         />
       </template>
     </div>

@@ -1,6 +1,5 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import BaseInput from '@/components/common/BaseInput.vue'
 import convertToPersianNumber from '@/utils/convertToPersian'
 import { useTimerStore } from '@/stores/timer-store'
 import BaseOTP from '@/components/BaseOTP.vue'
@@ -47,9 +46,13 @@ function countDown() {
     btn.value.textContent = 'ارسال مجدد'
     btn.value.disabled = false
   }
+  if (key.value.length == 0) {
+    resetBtn()
+  }
 }
 
 function MoveToNext(e) {
+  console.log(key.value.length)
   if (e.target.tabIndex == numberOfOTCBoxes) {
     btn.value.disabled = false
     btn.value.textContent = 'ارسال'
@@ -60,6 +63,9 @@ function MoveToNext(e) {
       key.value = `${key.value + e.target.value}`
     }
     if (e.target.value.length == 0) {
+      const keyArr = key.value.split('')
+      keyArr.pop()
+      key.value = keyArr.join('')
       e.target.previousSibling?.focus()
     }
   }
@@ -94,6 +100,11 @@ function endInterval() {
 function resetTimer() {
   timerStore.setTimer(timerValue)
 }
+
+function resetBtn() {
+  btn.value.disabled = true
+  btn.value.textContent = 'ارسال مجدد'
+}
 </script>
 
 <template>
@@ -112,24 +123,6 @@ function resetTimer() {
           <div class="otp__text">کد ارسال {{ numberInHint }} رقمی را اینجا وارد کنید</div>
         </template>
       </BaseOTP>
-      <!-- <div class="otp">
-          <div class="otp__title">کد تایید</div>
-          <div class="otp__boxes">
-            <template v-for="n in numberOfOTCBoxes" :key="n">
-              <BaseInput
-                type="text"
-                class="otp__box"
-                @input="MoveToNext"
-                :tabindex="n"
-                :autofocus="n == 1 ? true : false"
-                :value="defaultValue"
-                @paste="handlePaste"
-              />
-            </template>
-          </div>
-
-          <div class="otp__text">کد ارسال {{ numberInHint }} رقمی را اینجا وارد کنید</div>
-        </div> -->
       <div class="footer">
         <div class="footer__timer" ref="timerBox">
           زمان باقی مانده
