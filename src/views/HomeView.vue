@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import BaseInput from '@/components/common/BaseInput.vue'
+import convertToPersianNumber from '@/utils/convertToPersian'
 
 const btn = ref(null)
 const timerBox = ref(null)
@@ -11,8 +12,12 @@ const showTime = ref('۰۰:۰۰')
 const timerValue = 5
 const timer = ref(timerValue)
 
+const numberOfOTCBoxes = 4
+
 const defaultValue = ref('')
 let timerInterval
+
+const numberInHint = convertToPersianNumber(numberOfOTCBoxes)
 
 onMounted(() => {
   startInterval()
@@ -33,7 +38,7 @@ function countDown() {
 }
 
 function MoveToNext(e) {
-  if (e.target.tabIndex == 6) {
+  if (e.target.tabIndex == numberOfOTCBoxes) {
     btn.value.disabled = false
     btn.value.textContent = 'ارسال'
     btn.value.focus()
@@ -71,6 +76,10 @@ function startInterval() {
 function endInterval() {
   clearInterval(timerInterval)
 }
+
+function handlePaste(e) {
+  console.log(e.clipboardData)
+}
 </script>
 
 <template>
@@ -83,7 +92,7 @@ function endInterval() {
       <div class="otp">
         <div class="otp__title">کد تایید</div>
         <div class="otp__boxes">
-          <template v-for="n in 6" :key="n">
+          <template v-for="n in numberOfOTCBoxes" :key="n">
             <BaseInput
               type="text"
               class="otp__box"
@@ -91,10 +100,11 @@ function endInterval() {
               :tabindex="n"
               :autofocus="n == 1 ? true : false"
               :value="defaultValue"
+              @paste="handlePaste"
             />
           </template>
         </div>
-        <div class="otp__text">کد ارسال ۶ رقمی را اینجا وارد کنید</div>
+        <div class="otp__text">کد ارسال {{ numberInHint }} رقمی را اینجا وارد کنید</div>
       </div>
       <div class="footer">
         <div class="footer__timer" ref="timerBox">
@@ -182,7 +192,7 @@ main {
 .footer {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+
   gap: 0.5rem;
   &__timer {
     color: var(--Primary-Primary-500, #4152a0);
