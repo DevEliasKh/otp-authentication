@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue'
+import BaseInput from '@/components/common/BaseInput.vue'
+
 const btn = ref(null)
 const timerBox = ref(null)
 const key = ref('')
@@ -66,20 +68,15 @@ setInterval(countDown, 1000)
       <div class="otp">
         <div class="otp__title">کد تایید</div>
         <div class="otp__boxes">
-          <input
-            type="number"
-            tabindex="1"
-            autofocus
-            maxlength="1"
-            class="otp__box"
-            @input="MoveToNext"
-            ref="input"
-          />
-          <input type="number" tabindex="2" class="otp__box" @input="MoveToNext" ref="input" />
-          <input type="number" tabindex="3" class="otp__box" @input="MoveToNext" />
-          <input type="number" tabindex="4" class="otp__box" @input="MoveToNext" />
-          <input type="number" tabindex="5" class="otp__box" @input="MoveToNext" />
-          <input type="number" tabindex="6" class="otp__box" @input="MoveToNext" />
+          <template v-for="n in 6" :key="n">
+            <BaseInput
+              type="text"
+              class="otp__box"
+              @input="MoveToNext"
+              :tabindex="n"
+              :autofocus="n == 1 ? true : false"
+            />
+          </template>
         </div>
         <div class="otp__text">کد ارسال ۶ رقمی را اینجا وارد کنید</div>
       </div>
