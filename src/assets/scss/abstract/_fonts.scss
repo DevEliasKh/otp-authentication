@@ -3,8 +3,10 @@
   font-weight: 400;
   src:
     url('/src/assets/fonts/peyda/eot/PeydaWeb-Regular.eot') format('eot'),
-    url('/src/assets/fonts/peyda/woff/PeydaWeb-Regular.woff') format('woff'),
-    url('/src/assets/fonts/peyda/woff2/PeydaWeb-Regular.woff2') format('woff2'),
+    url('/src/assets/fonts/peyda/woff/PeydaWeb-Regular.woff')
+      format('woff'),
+    url('/src/assets/fonts/peyda/woff2/PeydaWeb-Regular.woff2')
+      format('woff2'),
     url('/src/assets/fonts/peyda/ttf/Peyda-Regular.ttf') format('truetype');
   font-style: normal;
   font-display: swap;
@@ -15,9 +17,12 @@
   font-weight: 600;
   src:
     url('/src/assets/fonts/peyda/eot/PeydaWeb-Regular.eot') format('eot'),
-    url('/src/assets/fonts/peyda/woff/PeydaWeb-SemiBold.woff') format('woff'),
-    url('/src/assets/fonts/peyda/woff2/PeydaWeb-SemiBold.woff2') format('woff2'),
-    url('/src/assets/fonts/peyda/ttf/Peyda-SemiBold.tff') format('truetype');
+    url('/src/assets/fonts/peyda/woff/PeydaWeb-SemiBold.woff')
+      format('woff'),
+    url('/src/assets/fonts/peyda/woff2/PeydaWeb-SemiBold.woff2')
+      format('woff2'),
+    url('/src/assets/fonts/peyda/ttf/Peyda-SemiBold.tff')
+      format('truetype');
   font-style: normal;
   font-display: swap;
 }
@@ -28,7 +33,8 @@
   src:
     url('/src/assets/fonts/peyda/eot/PeydaWeb-Regular.eot') format('eot'),
     url('/src/assets/fonts/peyda/woff/PeydaWeb-Bold.woff') format('woff'),
-    url('/src/assets/fonts/peyda/woff2/PeydaWeb-Bold.woff2') format('woff2'),
+    url('/src/assets/fonts/peyda/woff2/PeydaWeb-Bold.woff2')
+      format('woff2'),
     url('/src/assets/fonts/peyda/ttf/Peyda-Bold.tff') format('truetype');
   font-style: normal;
   font-display: swap;
@@ -40,7 +46,8 @@
   src:
     url('/src/assets/fonts/peyda/eot/PeydaWeb-Regular.eot') format('eot'),
     url('/src/assets/fonts/peyda/woff/PeydaWeb-Black.woff') format('woff'),
-    url('/src/assets/fonts/peyda/woff2/PeydaWeb-Black.woff2') format('woff2'),
+    url('/src/assets/fonts/peyda/woff2/PeydaWeb-Black.woff2')
+      format('woff2'),
     url('/src/assets/fonts/peyda/ttf/Peyda-Black.tff') format('truetype');
   font-style: normal;
   font-display: swap;

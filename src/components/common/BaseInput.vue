@@ -13,11 +13,16 @@ const props = defineProps({
   autofocus: {
     type: Boolean
   },
-  defaultValue: {
-    default: ''
+  // defaultValue: {
+  //   type: [String, Number],
+  //   default: ''
+  // },
+  onPaste: {
+    type: Function
   }
 })
-const DV = ref(props.defaultValue)
+
+// const DV = ref(props.defaultValue)
 </script>
 <template>
   <input
@@ -25,8 +30,10 @@ const DV = ref(props.defaultValue)
     :class="className"
     :autofocus="autofocus"
     @input="onInput"
-    :v-model="DV"
     maxlength="1"
+    @paste="onPaste"
   />
 </template>
 <style lang="scss"></style>
+
+<!-- :v-model="DV" -->

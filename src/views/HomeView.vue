@@ -3,19 +3,19 @@ import { onMounted, ref } from 'vue'
 import convertToPersianNumber from '@/utils/convertToPersian'
 import { useTimerStore } from '@/stores/timer-store'
 import BaseOTP from '@/components/BaseOTP.vue'
+
 const timerStore = useTimerStore()
 const btn = ref(null)
 const timerBox = ref(null)
 const key = ref('')
 const isLoading = ref(false)
-
 const showTime = ref('۰۰:۰۰')
 const timerValue = 10
 const timer = ref('')
 
 const numberOfOTCBoxes = 6
 
-const defaultValue = ref('')
+// const defaultValue = ref('')
 let timerInterval
 
 const numberInHint = convertToPersianNumber(numberOfOTCBoxes)
@@ -38,7 +38,6 @@ function countDown() {
   timerStore.setTimer(timer.value)
 
   showTime.value = `${sec}: ${min}`
-  console.log(timerBox.value.style.opacity)
   if (timer.value < -1) {
     endInterval()
     resetTimer()
@@ -52,7 +51,6 @@ function countDown() {
 }
 
 function MoveToNext(e) {
-  console.log(key.value.length)
   if (e.target.tabIndex == numberOfOTCBoxes) {
     btn.value.disabled = false
     btn.value.textContent = 'ارسال'
@@ -75,7 +73,7 @@ function showLoading() {
   isLoading.value = true
   setTimeout(() => {
     isLoading.value = false
-    defaultValue.value = null
+    // defaultValue.value = null
     btn.value.disabled = true
     resetTimer()
   }, 3000)
@@ -84,7 +82,7 @@ function showLoading() {
       startInterval()
       timer.value = timerValue
       timerBox.value.style.opacity = 1
-      defaultValue.value = null
+      // defaultValue.value = null
       btn.value.disabled = true
       resetTimer()
     }, 3000)
@@ -107,20 +105,24 @@ function resetBtn() {
 }
 </script>
 
+<!-- :inputDefault="defaultValue" -->
 <template>
   <main>
     <div class="loading" v-if="isLoading">
       <div class="lds-dual-ring"></div>
     </div>
     <div class="card">
-      <div class="text">کد تایید برای شماره تلفن ۰۹۳۹۱۰۶۶۱۳۴ ارسال شد.</div>
+      <div class="text">
+        کد تایید برای شماره تلفن ۰۹۳۹۱۰۶۶۱۳۴ ارسال شد.
+      </div>
       <BaseOTP
         :onFilledInput="MoveToNext"
-        :inputDefault="defaultValue"
         :numberOfOTCBoxes="numberOfOTCBoxes"
       >
         <template #hint>
-          <div class="otp__text">کد ارسال {{ numberInHint }} رقمی را اینجا وارد کنید</div>
+          <div class="otp__text">
+            کد ارسال {{ numberInHint }} رقمی را اینجا وارد کنید
+          </div>
         </template>
       </BaseOTP>
       <div class="footer">
@@ -130,7 +132,14 @@ function resetBtn() {
             {{ showTime }}
           </span>
         </div>
-        <button ref="btn" disabled="true" @click="showLoading" class="button">ارسال مجدد</button>
+        <button
+          ref="btn"
+          disabled="true"
+          @click="showLoading"
+          class="button"
+        >
+          ارسال مجدد
+        </button>
       </div>
     </div>
   </main>
