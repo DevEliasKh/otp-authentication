@@ -2,17 +2,19 @@
 import { onMounted, ref } from 'vue'
 import BaseInput from '@/components/common/BaseInput.vue'
 import convertToPersianNumber from '@/utils/convertToPersian'
+import { useTimerStore } from '@/stores/timer-store'
 
+const timerStore = useTimerStore()
 const btn = ref(null)
 const timerBox = ref(null)
 const key = ref('')
 const isLoading = ref(false)
 
 const showTime = ref('۰۰:۰۰')
-const timerValue = 5
-const timer = ref(timerValue)
+const timerValue = 120
+const timer = ref('')
 
-const numberOfOTCBoxes = 4
+const numberOfOTCBoxes = 5
 
 const defaultValue = ref('')
 let timerInterval
@@ -20,6 +22,12 @@ let timerInterval
 const numberInHint = convertToPersianNumber(numberOfOTCBoxes)
 
 onMounted(() => {
+  if (timerStore.$state.timer == 0) {
+    timer.value = timerValue
+    timerStore.setTimer(timerValue)
+  } else {
+    timer.value = timerStore.$state.timer
+  }
   startInterval()
 })
 
@@ -28,6 +36,8 @@ function countDown() {
   const sec = timer.value - min * 60
 
   timer.value = timer.value - 1
+  timerStore.setTimer(timer.value)
+
   showTime.value = `${sec}: ${min}`
   console.log(timerBox.value.style.opacity)
   if (timer.value == -1) {
@@ -104,6 +114,7 @@ function handlePaste(e) {
             />
           </template>
         </div>
+
         <div class="otp__text">کد ارسال {{ numberInHint }} رقمی را اینجا وارد کنید</div>
       </div>
       <div class="footer">
@@ -162,6 +173,7 @@ main {
     gap: 0.75rem;
   }
   &__box {
+    border: solid 1px black;
     text-align: center;
     width: 3.0625rem;
     height: 3rem;
