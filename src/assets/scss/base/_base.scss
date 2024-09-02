@@ -1,0 +1,20 @@
+* {
+  font-family: Peyda;
+  direction: rtl;
+  box-sizing: border-box;
+}
+
+hr {
+  width: 100%;
+}
+// remove arrow in input with type of number
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
