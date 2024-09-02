@@ -1,4 +1,3 @@
-<!-- :value="inputDefault" -->
 <template>
   <div class="otp">
     <div class="otp__title">کد تایید</div>
@@ -11,6 +10,7 @@
           :tabindex="n"
           :autofocus="n == 1 ? true : false"
           @paste="onPasteData"
+          :onfocus="focusHandler"
         />
       </template>
     </div>
@@ -23,17 +23,16 @@ import { ref } from 'vue'
 import BaseInput from '@/components/common/BaseInput.vue'
 import { onMounted } from 'vue'
 
-defineProps({
+const props = defineProps({
   onFilledInput: {
     type: Function
   },
-  // inputDefault: {
-  //   type: null
-  // },
+
   numberOfOTCBoxes: {
     type: Number
   }
 })
+
 const input = ref(null)
 let inputs = []
 onMounted(() => {
@@ -45,7 +44,28 @@ function onPasteData(event) {
   const arrPastedData = pastedData.split('')
   for (let i = 0; i < arrPastedData.length; i++) {
     inputs[i].value = +arrPastedData[i]
-    console.log(inputs[i])
+  }
+}
+
+function focusHandler(e) {
+  const element = e.target
+  let lastEmptyElement = findLastEmpty(element)
+  lastEmptyElement?.focus()
+}
+
+function findLastEmpty(element) {
+  if (element.value.length == 0 && element.tabIndex != 1) {
+    return findLastEmpty(element.previousSibling)
+  } else if (element.value.length == 0 && element.tabIndex == 1) {
+    return element
+  } else {
+    return element.nextSibling
+  }
+}
+
+function resetInput() {
+  for (let i = 0; i < inputs.length; i++) {
+    inputs[i].value = ''
   }
 }
 </script>

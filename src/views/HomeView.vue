@@ -15,7 +15,6 @@ const timer = ref('')
 
 const numberOfOTCBoxes = 6
 
-// const defaultValue = ref('')
 let timerInterval
 
 const numberInHint = convertToPersianNumber(numberOfOTCBoxes)
@@ -42,11 +41,7 @@ function countDown() {
     endInterval()
     resetTimer()
     timerBox.value.style.opacity = 0
-    btn.value.textContent = 'ارسال مجدد'
-    btn.value.disabled = false
-  }
-  if (key.value.length == 0) {
-    resetBtn()
+    resetBtn(false)
   }
 }
 
@@ -72,46 +67,50 @@ function MoveToNext(e) {
 function showLoading() {
   isLoading.value = true
   setTimeout(() => {
+    if (timer.value < 0) {
+      resetBtn(true)
+    } else {
+      resetBtn(true)
+    }
+    timerBox.value.style.opacity = 1
     isLoading.value = false
-    // defaultValue.value = null
-    btn.value.disabled = true
-    resetTimer()
   }, 3000)
-  if (timer.value < 0) {
-    setTimeout(() => {
-      startInterval()
-      timer.value = timerValue
-      timerBox.value.style.opacity = 1
-      // defaultValue.value = null
-      btn.value.disabled = true
-      resetTimer()
-    }, 3000)
-  }
 }
 function startInterval() {
   timerInterval = setInterval(countDown, 1000)
 }
 function endInterval() {
   clearInterval(timerInterval)
+  resetTimer()
 }
 
 function resetTimer() {
   timerStore.setTimer(timerValue)
+  timer.value = timerValue
 }
 
-function resetBtn() {
-  btn.value.disabled = true
+function resetBtn(disable) {
+  btn.value.disabled = disable
   btn.value.textContent = 'ارسال مجدد'
+}
+
+function submitHandler(event) {
+  event.preventDefault()
+
+  endInterval()
+  showLoading()
+  setTimeout(() => {
+    startInterval()
+  }, 3000)
 }
 </script>
 
-<!-- :inputDefault="defaultValue" -->
 <template>
   <main>
     <div class="loading" v-if="isLoading">
       <div class="lds-dual-ring"></div>
     </div>
-    <div class="card">
+    <form class="card" @submit="submitHandler">
       <div class="text">
         کد تایید برای شماره تلفن ۰۹۳۹۱۰۶۶۱۳۴ ارسال شد.
       </div>
@@ -132,16 +131,11 @@ function resetBtn() {
             {{ showTime }}
           </span>
         </div>
-        <button
-          ref="btn"
-          disabled="true"
-          @click="showLoading"
-          class="button"
-        >
+        <button ref="btn" disabled="true" class="button">
           ارسال مجدد
         </button>
       </div>
-    </div>
+    </form>
   </main>
 </template>
 <style lang="scss">
