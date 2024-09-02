@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import BaseInput from '@/components/common/BaseInput.vue'
 import convertToPersianNumber from '@/utils/convertToPersian'
 import { useTimerStore } from '@/stores/timer-store'
-
+import BaseOTP from '@/components/BaseOTP.vue'
 const timerStore = useTimerStore()
 const btn = ref(null)
 const timerBox = ref(null)
@@ -11,10 +11,10 @@ const key = ref('')
 const isLoading = ref(false)
 
 const showTime = ref('۰۰:۰۰')
-const timerValue = 120
+const timerValue = 10
 const timer = ref('')
 
-const numberOfOTCBoxes = 5
+const numberOfOTCBoxes = 6
 
 const defaultValue = ref('')
 let timerInterval
@@ -40,10 +40,12 @@ function countDown() {
 
   showTime.value = `${sec}: ${min}`
   console.log(timerBox.value.style.opacity)
-  if (timer.value == -1) {
+  if (timer.value < -1) {
     endInterval()
+    resetTimer()
     timerBox.value.style.opacity = 0
     btn.value.textContent = 'ارسال مجدد'
+    btn.value.disabled = false
   }
 }
 
@@ -69,6 +71,7 @@ function showLoading() {
     isLoading.value = false
     defaultValue.value = null
     btn.value.disabled = true
+    resetTimer()
   }, 3000)
   if (timer.value < 0) {
     setTimeout(() => {
@@ -77,6 +80,7 @@ function showLoading() {
       timerBox.value.style.opacity = 1
       defaultValue.value = null
       btn.value.disabled = true
+      resetTimer()
     }, 3000)
   }
 }
@@ -87,8 +91,8 @@ function endInterval() {
   clearInterval(timerInterval)
 }
 
-function handlePaste(e) {
-  console.log(e.clipboardData)
+function resetTimer() {
+  timerStore.setTimer(timerValue)
 }
 </script>
 
@@ -99,24 +103,33 @@ function handlePaste(e) {
     </div>
     <div class="card">
       <div class="text">کد تایید برای شماره تلفن ۰۹۳۹۱۰۶۶۱۳۴ ارسال شد.</div>
-      <div class="otp">
-        <div class="otp__title">کد تایید</div>
-        <div class="otp__boxes">
-          <template v-for="n in numberOfOTCBoxes" :key="n">
-            <BaseInput
-              type="text"
-              class="otp__box"
-              @input="MoveToNext"
-              :tabindex="n"
-              :autofocus="n == 1 ? true : false"
-              :value="defaultValue"
-              @paste="handlePaste"
-            />
-          </template>
-        </div>
+      <BaseOTP
+        :onFilledInput="MoveToNext"
+        :inputDefault="defaultValue"
+        :numberOfOTCBoxes="numberOfOTCBoxes"
+      >
+        <template #hint>
+          <div class="otp__text">کد ارسال {{ numberInHint }} رقمی را اینجا وارد کنید</div>
+        </template>
+      </BaseOTP>
+      <!-- <div class="otp">
+          <div class="otp__title">کد تایید</div>
+          <div class="otp__boxes">
+            <template v-for="n in numberOfOTCBoxes" :key="n">
+              <BaseInput
+                type="text"
+                class="otp__box"
+                @input="MoveToNext"
+                :tabindex="n"
+                :autofocus="n == 1 ? true : false"
+                :value="defaultValue"
+                @paste="handlePaste"
+              />
+            </template>
+          </div>
 
-        <div class="otp__text">کد ارسال {{ numberInHint }} رقمی را اینجا وارد کنید</div>
-      </div>
+          <div class="otp__text">کد ارسال {{ numberInHint }} رقمی را اینجا وارد کنید</div>
+        </div> -->
       <div class="footer">
         <div class="footer__timer" ref="timerBox">
           زمان باقی مانده
